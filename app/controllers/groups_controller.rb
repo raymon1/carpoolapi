@@ -24,6 +24,7 @@ class GroupsController < ApplicationController
   # POST /groups
   # POST /groups.json
   def create
+    puts params[:group]
     @group = Group.new(group_params)
 
     respond_to do |format|
