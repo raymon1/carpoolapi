@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907215850) do
+ActiveRecord::Schema.define(version: 20160908224322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,28 @@ ActiveRecord::Schema.define(version: 20160907215850) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "trip_joins", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "trip_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trip_id"], name: "index_trip_joins_on_trip_id", using: :btree
+    t.index ["user_id"], name: "index_trip_joins_on_user_id", using: :btree
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.integer  "driver_id"
+    t.integer  "source_id"
+    t.integer  "destination_id"
+    t.datetime "departure_time"
+    t.integer  "seats"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["destination_id"], name: "index_trips_on_destination_id", using: :btree
+    t.index ["driver_id"], name: "index_trips_on_driver_id", using: :btree
+    t.index ["source_id"], name: "index_trips_on_source_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -43,6 +65,11 @@ ActiveRecord::Schema.define(version: 20160907215850) do
     t.index ["work_place_id"], name: "index_users_on_work_place_id", using: :btree
   end
 
+  add_foreign_key "trip_joins", "trips"
+  add_foreign_key "trip_joins", "users"
+  add_foreign_key "trips", "places", column: "destination_id"
+  add_foreign_key "trips", "places", column: "source_id"
+  add_foreign_key "trips", "users", column: "driver_id"
   add_foreign_key "users", "groups"
   add_foreign_key "users", "places", column: "home_place_id"
   add_foreign_key "users", "places", column: "work_place_id"
