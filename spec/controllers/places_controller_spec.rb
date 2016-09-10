@@ -24,19 +24,26 @@ RSpec.describe PlacesController, type: :controller do
   # Place. As you add validations to Place, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {name: "zamalek", longitude: 12.52, latitude: 0}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {name: "zamalek", longitude: -181, latitude: 181}
   }
 
+  it do
+    params = {place: {name: 'zamalek', longitude: 12.52, latitude: 0}}
+    should permit(:name).for(:create, params: params).on(:place)
+  end
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PlacesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   describe "GET #index" do
+    before { get :index }
+    it { should respond_with(200) }
+
     it "assigns all places as @places" do
       place = Place.create! valid_attributes
       get :index, params: {}, session: valid_session
@@ -52,20 +59,6 @@ RSpec.describe PlacesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new place as @place" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:place)).to be_a_new(Place)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested place as @place" do
-      place = Place.create! valid_attributes
-      get :edit, params: {id: place.to_param}, session: valid_session
-      expect(assigns(:place)).to eq(place)
-    end
-  end
 
   describe "POST #create" do
     context "with valid params" do
@@ -100,46 +93,44 @@ RSpec.describe PlacesController, type: :controller do
     end
   end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+  # describe "PUT #update" do
+  #   context "with valid params" do
+  #     let(:new_attributes) {{ name: "dokki", longitude: 12, latitude: -18.123}}
 
-      it "updates the requested place" do
-        place = Place.create! valid_attributes
-        put :update, params: {id: place.to_param, place: new_attributes}, session: valid_session
-        place.reload
-        skip("Add assertions for updated state")
-      end
+  #     it "updates the requested place" do
+  #       place = Place.create! valid_attributes
+  #       put :update, params: {id: place.to_param, place: new_attributes}, session: valid_session
+  #       place.reload
+  #       skip("Add assertions for updated state")
+  #     end
 
-      it "assigns the requested place as @place" do
-        place = Place.create! valid_attributes
-        put :update, params: {id: place.to_param, place: valid_attributes}, session: valid_session
-        expect(assigns(:place)).to eq(place)
-      end
+  #     it "assigns the requested place as @place" do
+  #       place = Place.create! valid_attributes
+  #       put :update, params: {id: place.to_param, place: valid_attributes}, session: valid_session
+  #       expect(assigns(:place)).to eq(place)
+  #     end
 
-      it "redirects to the place" do
-        place = Place.create! valid_attributes
-        put :update, params: {id: place.to_param, place: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(place)
-      end
-    end
+  #     it "redirects to the place" do
+  #       place = Place.create! valid_attributes
+  #       put :update, params: {id: place.to_param, place: valid_attributes}, session: valid_session
+  #       expect(response).to redirect_to(place)
+  #     end
+  #   end
 
-    context "with invalid params" do
-      it "assigns the place as @place" do
-        place = Place.create! valid_attributes
-        put :update, params: {id: place.to_param, place: invalid_attributes}, session: valid_session
-        expect(assigns(:place)).to eq(place)
-      end
+  #   context "with invalid params" do
+  #     it "assigns the place as @place" do
+  #       place = Place.create! valid_attributes
+  #       put :update, params: {id: place.to_param, place: invalid_attributes}, session: valid_session
+  #       expect(assigns(:place)).to eq(place)
+  #     end
 
-      it "re-renders the 'edit' template" do
-        place = Place.create! valid_attributes
-        put :update, params: {id: place.to_param, place: invalid_attributes}, session: valid_session
-        expect(response).to render_template("edit")
-      end
-    end
-  end
+  #     it "re-renders the 'edit' template" do
+  #       place = Place.create! valid_attributes
+  #       put :update, params: {id: place.to_param, place: invalid_attributes}, session: valid_session
+  #       expect(response).to render_template("edit")
+  #     end
+  #   end
+  # end
 
   describe "DELETE #destroy" do
     it "destroys the requested place" do

@@ -5,9 +5,9 @@ class TripsController < ApplicationController
   # GET /trips.json
   def index
     user = User.find_by_id(params[:user_id])
-    colleagues = User.where(group: user.group).ids
+    colleagues = user.group.users.ids
     @trips = Trip.where(source: user.home_place, destination: user.work_place, driver: colleagues)
-    @trips = @trips.where('departure_time > ?', DateTime.now)
+    @trips = @trips.where('departure_time > ? and seat > 0', DateTime.now)
   end
 
   # GET /trips/1

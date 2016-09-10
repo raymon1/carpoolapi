@@ -6,5 +6,5 @@ class Trip < ApplicationRecord
   has_many :users, through: :trip_joins
 
   validates :driver, :source, :destination, :departure_time, :seats, presence: true
-  validates :seats, numericality: { only_integer: true, greater_than_or_equal_to: 0}
+  validates :seats, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than: 101}
 end

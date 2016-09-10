@@ -34,6 +34,13 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '~> 3.5'
+  gem 'shoulda-matchers', '~> 3.1'
+  gem 'simplecov', :require => false
+  gem 'rails-controller-testing'
+end
+
+group :test do
+  gem 'database_cleaner', '~> 1.5'
 end
 
 group :development do
